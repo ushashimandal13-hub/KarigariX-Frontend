@@ -1,1338 +1,530 @@
-// ============================================================
-// KARIGARI X
-// ARTIST FRONTEND
-// ============================================================
+// ==========================================
+// KARIGARIX - FRONTEND
+// ==========================================
+
+const API_BASE_URL = "http://localhost:8080";
 
 
-// ============================================================
-// INITIAL PRODUCT DATA
-// ============================================================
+// ==========================================
+// 1. LANDING PAGE → DASHBOARD
+// ==========================================
 
-const defaultProducts = [
-
-    {
-        id: "PT-001",
-        name: "Pattachitra Painting",
-        description: "Natural colours, cotton canvas",
-        created: "12 Aug 2026",
-        location: "Raghurajpur, Odisha",
-        status: "available"
-    },
-
-    {
-        id: "SR-002",
-        name: "Sambalpuri Saree",
-        description: "Cotton, natural dye",
-        created: "14 Aug 2026",
-        location: "Sambalpur, Odisha",
-        status: "available"
-    },
-
-    {
-        id: "DK-003",
-        name: "Dokra Metal Craft",
-        description: "Traditional bell metal",
-        created: "15 Aug 2026",
-        location: "Dhenkanal, Odisha",
-        status: "available"
-    },
-
-    {
-        id: "PT-009",
-        name: "Traditional Painting",
-        description: "Authentication required",
-        created: "10 Aug 2026",
-        location: "Odisha",
-        status: "suspended"
-    }
-
-];
-
-
-// ============================================================
-// LOAD SAVED PRODUCTS
-// ============================================================
-
-let products =
-    JSON.parse(
-        localStorage.getItem("karigariProducts")
-    ) || defaultProducts;
-
-
-// ============================================================
-// SAVE PRODUCTS
-// ============================================================
-
-function saveProducts() {
-
-    localStorage.setItem(
-        "karigariProducts",
-        JSON.stringify(products)
-    );
-
-}
-
-
-// ============================================================
-// LOGIN
-// ============================================================
-
-const loginForm =
-    document.getElementById("loginForm");
-
+const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    loginForm.addEventListener(
-        "submit",
-        function (event) {
+        const emailInput = document.getElementById("email");
+        const email = emailInput.value.trim();
 
-            event.preventDefault();
+        if (!email) return;
 
+        localStorage.setItem("artistEmail", email);
 
-            const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim();
+        window.location.href = "dashboard.html";
+    });
+}
 
 
-            if (!email) {
-                return;
+// ==========================================
+// 2. DASHBOARD
+// ==========================================
+
+const productsTableBody =
+    document.getElementById("productsTableBody");
+
+const suspendedTableBody =
+    document.getElementById("suspendedTableBody");
+
+if (productsTableBody && suspendedTableBody) {
+
+    const artistEmail = localStorage.getItem("artistEmail");
+
+    const artistEmailElement =
+        document.getElementById("artistEmail");
+
+    if (artistEmailElement && artistEmail) {
+        artistEmailElement.textContent = artistEmail;
+    }
+
+    const productSearch =
+        document.getElementById("productSearch");
+
+    const suspendedSearch =
+        document.getElementById("suspendedSearch");
+
+    if (productSearch && artistEmail) {
+        productSearch.value = artistEmail;
+    }
+
+    if (suspendedSearch && artistEmail) {
+        suspendedSearch.value = artistEmail;
+    }
+
+    if (artistEmail) {
+        loadProducts(artistEmail);
+        loadSuspendedProducts(artistEmail);
+    }
+
+
+    // Normal product search
+    const searchProductsBtn =
+        document.getElementById("searchProductsBtn");
+
+    if (searchProductsBtn) {
+        searchProductsBtn.addEventListener("click", function () {
+
+            const email = productSearch.value.trim();
+
+            if (email) {
+                loadProducts(email);
             }
+        });
+    }
 
 
-            localStorage.setItem(
-                "artistEmail",
-                email
-            );
+    // Suspended product search
+    const searchSuspendedBtn =
+        document.getElementById("searchSuspendedBtn");
+
+    if (searchSuspendedBtn) {
+        searchSuspendedBtn.addEventListener("click", function () {
+
+            const email = suspendedSearch.value.trim();
+
+            if (email) {
+                loadSuspendedProducts(email);
+            }
+        });
+    }
+}
 
 
-            showDashboard(email);
+// ==========================================
+// 3. GET NORMAL PRODUCTS
+// ==========================================
 
+async function loadProducts(email) {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/artist/search?email=${encodeURIComponent(email)}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Could not fetch products.");
         }
-    );
 
+        const products = await response.json();
+
+        renderProducts(products);
+
+    } catch (error) {
+
+        console.error("Product loading error:", error);
+
+        if (productsTableBody) {
+            productsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Unable to load products.
+                    </td>
+                </tr>
+            `;
+        }
+    }
 }
 
 
-// ============================================================
-// DASHBOARD
-// ============================================================
-
-function showDashboard(email) {
-
-    document.body.innerHTML = `
-
-        <!-- NAVBAR -->
-
-        <header class="dashboard-navbar">
-
-            <div class="dashboard-logo">
-
-                <div class="logo-symbol">
-                    ♢
-                </div>
-
-                <div>
-
-                    <h2>
-                        KARIGARI
-                    </h2>
-
-                    <span>
-                        DIGITAL CRAFT PASSPORT
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="artist-profile">
-
-                <div class="artist-avatar">
-                    ${email.charAt(0).toUpperCase()}
-                </div>
-
-                <div>
-
-                    <strong>
-                        Artist
-                    </strong>
-
-                    <small>
-                        ${email}
-                    </small>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- DASHBOARD -->
-
-        <main class="dashboard">
-
-
-            <!-- HEADER -->
-
-            <section class="dashboard-header">
-
-                <div>
-
-                    <p class="small-heading">
-                        ARTIST DASHBOARD
-                    </p>
-
-                    <h1>
-                        Your Products
-                    </h1>
-
-                    <p>
-                        Manage your registered crafts
-                        and their current status.
-                    </p>
-
-                </div>
-
-
-                <button
-                    class="register-button"
-                    onclick="openRegisterPage()"
-                >
-                    + Register Product
-                </button>
-
-            </section>
-
-
-
-            <!-- STATISTICS -->
-
-            <section class="stats">
-
-                <div class="stat-card">
-
-                    <span>
-                        TOTAL PRODUCTS
-                    </span>
-
-                    <strong id="totalCount">
-                        0
-                    </strong>
-
-                    <small>
-                        Registered crafts
-                    </small>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>
-                        AVAILABLE
-                    </span>
-
-                    <strong id="availableCount">
-                        0
-                    </strong>
-
-                    <small>
-                        Ready for sale
-                    </small>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>
-                        SOLD OUT
-                    </span>
-
-                    <strong id="soldCount">
-                        0
-                    </strong>
-
-                    <small>
-                        Completed sales
-                    </small>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>
-                        SUSPENDED
-                    </span>
-
-                    <strong id="suspendedCount">
-                        0
-                    </strong>
-
-                    <small>
-                        Authentication issue
-                    </small>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- AVAILABLE PRODUCTS -->
-
-            <section class="product-section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <p class="small-heading">
-                            VERIFIED PRODUCTS
-                        </p>
-
-                        <h2>
-                            Available Products
-                        </h2>
-
-                    </div>
-
-
-                    <input
-                        type="text"
-                        id="availableSearch"
-                        class="product-search"
-                        placeholder="Search products..."
-                        oninput="searchProducts('available')"
-                    >
-
-                </div>
-
-
-                <div class="product-table">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    PRODUCT
-                                </th>
-
-                                <th>
-                                    PRODUCT ID
-                                </th>
-
-                                <th>
-                                    CREATED
-                                </th>
-
-                                <th>
-                                    LOCATION
-                                </th>
-
-                                <th>
-                                    STATUS
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="availableProducts">
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- SOLD OUT PRODUCTS -->
-
-            <section class="product-section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <p class="small-heading">
-                            SALES
-                        </p>
-
-                        <h2>
-                            Sold Out Products
-                        </h2>
-
-                    </div>
-
-
-                    <input
-                        type="text"
-                        id="soldSearch"
-                        class="product-search"
-                        placeholder="Search sold products..."
-                        oninput="searchProducts('sold')"
-                    >
-
-                </div>
-
-
-                <div class="product-table">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    PRODUCT
-                                </th>
-
-                                <th>
-                                    PRODUCT ID
-                                </th>
-
-                                <th>
-                                    CREATED
-                                </th>
-
-                                <th>
-                                    LOCATION
-                                </th>
-
-                                <th>
-                                    STATUS
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="soldProducts">
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- SUSPENDED PRODUCTS -->
-
-            <section class="product-section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <p class="small-heading">
-                            VERIFICATION ATTENTION
-                        </p>
-
-                        <h2>
-                            Suspended Products
-                        </h2>
-
-                    </div>
-
-
-                    <input
-                        type="text"
-                        id="suspendedSearch"
-                        class="product-search"
-                        placeholder="Search suspended products..."
-                        oninput="searchProducts('suspended')"
-                    >
-
-                </div>
-
-
-                <div class="product-table">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    PRODUCT
-                                </th>
-
-                                <th>
-                                    PRODUCT ID
-                                </th>
-
-                                <th>
-                                    CREATED
-                                </th>
-
-                                <th>
-                                    LOCATION
-                                </th>
-
-                                <th>
-                                    STATUS
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="suspendedProducts">
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-        </main>
-
-
-
-        <!-- PRODUCT MODAL -->
-
-        <div
-            class="modal-overlay"
-            id="productModal"
-        >
-
-            <div
-                class="product-modal"
-                id="productModalContent"
-            >
-
-            </div>
-
-        </div>
-
-
-
-        <!-- REGISTER PANEL -->
-
-        <div
-            class="register-overlay"
-            id="registerOverlay"
-        >
-
-            <div class="register-panel">
-
-                <button
-                    class="modal-close"
-                    onclick="closeRegisterPage()"
-                >
-                    ×
-                </button>
-
-
-                <p class="small-heading">
-                    NEW PRODUCT
-                </p>
-
-
-                <h2>
-                    Register Product
-                </h2>
-
-
-                <p class="panel-description">
-                    Add the details of your craft to create
-                    its digital product passport.
-                </p>
-
-
-                <form
-                    id="registerForm"
-                    onsubmit="registerNewProduct(event)"
-                >
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Product Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="productName"
-                            placeholder="e.g. Pattachitra Painting"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label>
-                                Product ID
-                            </label>
-
-                            <input
-                                type="text"
-                                id="productId"
-                                placeholder="PT-004"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Location
-                            </label>
-
-                            <input
-                                type="text"
-                                id="productLocation"
-                                placeholder="Raghurajpur, Odisha"
-                                required
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Description
-                        </label>
-
-                        <textarea
-                            id="productDescription"
-                            placeholder="Describe your craft..."
-                            rows="4"
-                        ></textarea>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="register-submit"
-                    >
-                        Register Product →
-                    </button>
-
-
-                </form>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    renderProducts();
-
+// ==========================================
+// 4. GET SUSPENDED PRODUCTS
+// ==========================================
+
+async function loadSuspendedProducts(email) {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/artist/suspended?email=${encodeURIComponent(email)}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Could not fetch suspended products.");
+        }
+
+        const products = await response.json();
+
+        renderSuspendedProducts(products);
+
+    } catch (error) {
+
+        console.error(
+            "Suspended product loading error:",
+            error
+        );
+
+        if (suspendedTableBody) {
+            suspendedTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Unable to load suspended products.
+                    </td>
+                </tr>
+            `;
+        }
+    }
 }
 
 
-// ============================================================
-// RENDER PRODUCTS
-// ============================================================
+// ==========================================
+// 5. RENDER NORMAL PRODUCTS
+// ==========================================
 
-function renderProducts() {
+function renderProducts(products) {
 
-    const available =
-        document.getElementById(
-            "availableProducts"
-        );
+    productsTableBody.innerHTML = "";
 
-    const sold =
-        document.getElementById(
-            "soldProducts"
-        );
+    if (!products || products.length === 0) {
 
-    const suspended =
-        document.getElementById(
-            "suspendedProducts"
-        );
-
-
-    if (!available) return;
-
-
-    const availableProducts =
-        products.filter(
-            product => product.status === "available"
-        );
-
-
-    const soldProducts =
-        products.filter(
-            product => product.status === "sold"
-        );
-
-
-    const suspendedProducts =
-        products.filter(
-            product => product.status === "suspended"
-        );
-
-
-    available.innerHTML =
-        createRows(
-            availableProducts,
-            "available"
-        );
-
-
-    sold.innerHTML =
-        createRows(
-            soldProducts,
-            "sold"
-        );
-
-
-    suspended.innerHTML =
-        createRows(
-            suspendedProducts,
-            "suspended"
-        );
-    function updateStatistics() {
-
-    const total =
-        products.length;
-
-    const available =
-        products.filter(
-            product => product.status === "available"
-        ).length;
-
-    const sold =
-        products.filter(
-            product => product.status === "sold"
-        ).length;
-
-    const suspended =
-        products.filter(
-            product => product.status === "suspended"
-        ).length;
-
-
-    document.getElementById("totalCount").textContent =
-        total;
-
-    document.getElementById("availableCount").textContent =
-        available;
-
-    document.getElementById("soldCount").textContent =
-        sold;
-
-    document.getElementById("suspendedCount").textContent =
-        suspended;
-}
-
-    updateStatistics();
-
-}
-
-
-// ============================================================
-// CREATE TABLE ROWS
-// ============================================================
-
-function createRows(productList, type) {
-
-    if (productList.length === 0) {
-
-        return `
+        productsTableBody.innerHTML = `
             <tr>
-                <td
-                    colspan="5"
-                    class="empty-state"
-                >
-                    No products here yet.
+                <td colspan="4">
+                    No products found.
                 </td>
             </tr>
         `;
 
+        return;
     }
 
+    products.forEach(product => {
 
-    return productList.map(product => `
+        const row = document.createElement("tr");
 
-        <tr
-            class="product-row"
-            onclick="openProduct('${product.id}')"
-        >
-
+        row.innerHTML = `
             <td>
-
-                <strong>
-                    ${product.name}
-                </strong>
-
-                <small>
-                    ${product.description}
-                </small>
-
+                <strong>${escapeHTML(product.productName)}</strong>
             </td>
 
-
             <td>
-                ${product.id}
+                ${escapeHTML(product.artistName || "-")}
             </td>
 
-
             <td>
-                ${product.created}
+                ₹${product.fixedCost ?? 0}
             </td>
 
-
             <td>
-                ${product.location}
-            </td>
-
-
-            <td>
-
-                <span class="status ${product.status}">
-
-                    ${getStatusText(product.status)}
-
+                <span class="status ${getStatusClass(product.status)}">
+                    ${formatStatus(product.status)}
                 </span>
-
             </td>
-
-        </tr>
-
-    `).join("");
-
-}
-
-
-// ============================================================
-// STATUS TEXT
-// ============================================================
-
-function getStatusText(status) {
-
-    if (status === "available") {
-        return "● Available";
-    }
-
-    if (status === "sold") {
-        return "● Sold Out";
-    }
-
-    if (status === "suspended") {
-        return "● Suspended";
-    }
-
-}
-
-
-// ============================================================
-// PRODUCT MODAL
-// ============================================================
-
-function openProduct(productId) {
-
-    const product =
-        products.find(
-            item => item.id === productId
-        );
-
-
-    if (!product) return;
-
-
-    const modal =
-        document.getElementById(
-            "productModal"
-        );
-
-
-    const content =
-        document.getElementById(
-            "productModalContent"
-        );
-
-
-    let actionButton = "";
-
-
-    if (product.status === "available") {
-
-        actionButton = `
-
-            <button
-                class="modal-action sold-action"
-                onclick="markSoldOut('${product.id}')"
-            >
-                Mark as Sold Out
-            </button>
-
         `;
 
-    }
+        row.addEventListener("click", function () {
+            openProductModal(product, false);
+        });
+
+        productsTableBody.appendChild(row);
+    });
+}
 
 
-    if (product.status === "suspended") {
+// ==========================================
+// 6. RENDER SUSPENDED PRODUCTS
+// ==========================================
 
-        actionButton = `
+function renderSuspendedProducts(products) {
 
-            <button
-                class="modal-action unsuspend-action"
-                onclick="unsuspendProduct('${product.id}')"
-            >
-                Unsuspend Product
-            </button>
+    suspendedTableBody.innerHTML = "";
 
+    if (!products || products.length === 0) {
+
+        suspendedTableBody.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    No suspended products found.
+                </td>
+            </tr>
         `;
 
+        return;
     }
 
+    products.forEach(product => {
 
-    content.innerHTML = `
+        const row = document.createElement("tr");
 
-        <button
-            class="modal-close"
-            onclick="closeProduct()"
-        >
-            ×
-        </button>
+        row.innerHTML = `
+            <td>
+                <strong>${escapeHTML(product.productName)}</strong>
+            </td>
 
+            <td>
+                ${escapeHTML(product.artistName || "-")}
+            </td>
 
-        <p class="small-heading">
-            PRODUCT DETAILS
-        </p>
+            <td>
+                ₹${product.fixedCost ?? 0}
+            </td>
 
-
-        <h2>
-            ${product.name}
-        </h2>
-
-
-        <p class="modal-description">
-            ${product.description}
-        </p>
-
-
-        <div class="modal-details">
-
-            <div>
-                <span>
-                    Product ID
+            <td>
+                <span class="status suspended">
+                    SUSPENDED
                 </span>
+            </td>
+        `;
 
-                <strong>
-                    ${product.id}
-                </strong>
-            </div>
+        row.addEventListener("click", function () {
+            openProductModal(product, true);
+        });
 
-
-            <div>
-                <span>
-                    Created
-                </span>
-
-                <strong>
-                    ${product.created}
-                </strong>
-            </div>
-
-
-            <div>
-                <span>
-                    Location
-                </span>
-
-                <strong>
-                    ${product.location}
-                </strong>
-            </div>
-
-        </div>
-
-
-        <div class="modal-status">
-
-            <span>
-                Current Status
-            </span>
-
-            <strong
-                class="status ${product.status}"
-            >
-                ${getStatusText(product.status)}
-            </strong>
-
-        </div>
-
-
-        ${actionButton}
-
-    `;
-
-
-    modal.classList.add("show");
-
+        suspendedTableBody.appendChild(row);
+    });
 }
 
 
-// ============================================================
-// CLOSE PRODUCT
-// ============================================================
+// ==========================================
+// 7. PRODUCT MODAL
+// ==========================================
 
-function closeProduct() {
+let selectedProduct = null;
+let selectedProductIsSuspended = false;
 
-    const modal =
-        document.getElementById(
-            "productModal"
-        );
+function openProductModal(product, isSuspended) {
 
+    selectedProduct = product;
+    selectedProductIsSuspended = isSuspended;
 
-    if (modal) {
+    document.getElementById("modalProductName").textContent =
+        product.productName || "Product";
 
-        modal.classList.remove("show");
+    document.getElementById("modalArtistName").textContent =
+        product.artistName || "-";
 
+    document.getElementById("modalMaterial").textContent =
+        product.materialDetails || "-";
+
+    document.getElementById("modalHistory").textContent =
+        product.history || "-";
+
+    document.getElementById("modalCost").textContent =
+        product.fixedCost ?? "0";
+
+    document.getElementById("modalStatus").textContent =
+        formatStatus(product.status);
+
+    const soldOutBtn =
+        document.getElementById("soldOutBtn");
+
+    const unsuspendBtn =
+        document.getElementById("unsuspendBtn");
+
+    if (isSuspended) {
+
+        soldOutBtn.style.display = "none";
+        unsuspendBtn.style.display = "block";
+
+    } else {
+
+        unsuspendBtn.style.display = "none";
+
+        if (product.status === "SOLD") {
+            soldOutBtn.style.display = "none";
+        } else {
+            soldOutBtn.style.display = "block";
+        }
     }
 
+    document
+        .getElementById("productModal")
+        .classList.remove("hidden");
 }
 
 
-// ============================================================
-// MARK SOLD OUT
-// ============================================================
+// ==========================================
+// 8. CLOSE MODAL
+// ==========================================
 
-function markSoldOut(productId) {
+const closeProductModal =
+    document.getElementById("closeProductModal");
 
-    const product =
-        products.find(
-            item => item.id === productId
-        );
+if (closeProductModal) {
 
+    closeProductModal.addEventListener("click", function () {
 
-    if (!product) return;
-
-
-    product.status = "sold";
-
-
-    saveProducts();
-
-
-    closeProduct();
-
-
-    renderProducts();
-
-
-    showToast(
-        "Product marked as Sold Out."
-    );
-
-}
-
-
-// ============================================================
-// UNSUSPEND
-// ============================================================
-
-function unsuspendProduct(productId) {
-
-    const product =
-        products.find(
-            item => item.id === productId
-        );
-
-
-    if (!product) return;
-
-
-    product.status = "available";
-
-
-    saveProducts();
-
-
-    closeProduct();
-
-
-    renderProducts();
-
-
-    showToast(
-        "Product has been unsuspended."
-    );
-
-}
-
-
-// ============================================================
-// REGISTER PAGE
-// ============================================================
-
-function openRegisterPage() {
-
-    const overlay =
-        document.getElementById(
-            "registerOverlay"
-        );
-
-
-    if (overlay) {
-
-        overlay.classList.add("show");
-
-    }
-
-}
-
-
-function closeRegisterPage() {
-
-    const overlay =
-        document.getElementById(
-            "registerOverlay"
-        );
-
-
-    if (overlay) {
-
-        overlay.classList.remove("show");
-
-    }
-
-}
-
-
-// ============================================================
-// REGISTER NEW PRODUCT
-// ============================================================
-
-function registerNewProduct(event) {
-
-    event.preventDefault();
-
-
-    const name =
         document
-            .getElementById("productName")
-            .value
-            .trim();
-
-
-    const id =
-        document
-            .getElementById("productId")
-            .value
-            .trim();
-
-
-    const location =
-        document
-            .getElementById("productLocation")
-            .value
-            .trim();
-
-
-    const description =
-        document
-            .getElementById("productDescription")
-            .value
-            .trim();
-
-
-    const newProduct = {
-
-        id: id,
-
-        name: name,
-
-        description:
-            description ||
-            "Traditional handcrafted product",
-
-        created: "18 Aug 2026",
-
-        location: location,
-
-        status: "available"
-
-    };
-
-
-    products.push(newProduct);
-
-
-    saveProducts();
-
-
-    closeRegisterPage();
-
-
-    renderProducts();
-
-
-    showToast(
-        "Product registered successfully."
-    );
-
-}
-
-
-// ============================================================
-// SEARCH
-// ============================================================
-
-function searchProducts(type) {
-
-    let inputId = "";
-
-
-    if (type === "available") {
-        inputId = "availableSearch";
-    }
-
-    if (type === "sold") {
-        inputId = "soldSearch";
-    }
-
-    if (type === "suspended") {
-        inputId = "suspendedSearch";
-    }
-
-
-    const input =
-        document.getElementById(inputId);
-
-
-    if (!input) return;
-
-
-    const query =
-        input.value
-            .toLowerCase()
-            .trim();
-
-
-    const rows =
-        document.querySelectorAll(
-            `.product-row`
-        );
-
-
-    rows.forEach(row => {
-
-        const text =
-            row.innerText.toLowerCase();
-
-
-        const status =
-            row.querySelector(".status");
-
-
-        if (!status) return;
-
-
-        const matchesStatus =
-            status.classList.contains(type);
-
-
-        const matchesSearch =
-            text.includes(query);
-
-
-        row.style.display =
-            matchesStatus && matchesSearch
-                ? ""
-                : "none";
+            .getElementById("productModal")
+            .classList.add("hidden");
 
     });
-
 }
 
 
-// ============================================================
-// TOAST NOTIFICATION
-// ============================================================
+const productModal =
+    document.getElementById("productModal");
 
-function showToast(message) {
+if (productModal) {
 
-    const existing =
-        document.querySelector(
-            ".toast"
-        );
+    productModal.addEventListener("click", function (event) {
+
+        if (event.target === productModal) {
+
+            productModal.classList.add("hidden");
+        }
+    });
+}
 
 
-    if (existing) {
-        existing.remove();
+// ==========================================
+// 9. SOLD OUT
+// ==========================================
+
+const soldOutBtn =
+    document.getElementById("soldOutBtn");
+
+if (soldOutBtn) {
+
+    soldOutBtn.addEventListener("click", async function () {
+
+        if (!selectedProduct) return;
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/artist/craft/${selectedProduct.craftId}/sold`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not mark product as sold.");
+            }
+
+            const updatedProduct =
+                await response.json();
+
+            selectedProduct = updatedProduct;
+
+            document
+                .getElementById("productModal")
+                .classList.add("hidden");
+
+            const email =
+                localStorage.getItem("artistEmail");
+
+            if (email) {
+                loadProducts(email);
+            }
+
+        } catch (error) {
+
+            console.error("Sold out error:", error);
+        }
+    });
+}
+
+
+// ==========================================
+// 10. UNSUSPEND
+// ==========================================
+
+const unsuspendBtn =
+    document.getElementById("unsuspendBtn");
+
+if (unsuspendBtn) {
+
+    unsuspendBtn.addEventListener("click", async function () {
+
+        if (!selectedProduct) return;
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/artist/craft/${selectedProduct.craftId}/unsuspend`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not unsuspend product.");
+            }
+
+            await response.json();
+
+            document
+                .getElementById("productModal")
+                .classList.add("hidden");
+
+            const email =
+                localStorage.getItem("artistEmail");
+
+            if (email) {
+                loadProducts(email);
+                loadSuspendedProducts(email);
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Unsuspend error:",
+                error
+            );
+        }
+    });
+}
+
+
+// ==========================================
+// 11. STATUS FORMATTING
+// ==========================================
+
+function formatStatus(status) {
+
+    if (!status) {
+        return "UNKNOWN";
     }
 
+    if (status === "SOLD") {
+        return "SOLD OUT";
+    }
 
-    const toast =
-        document.createElement(
-            "div"
-        );
-
-
-    toast.className =
-        "toast";
+    return status;
+}
 
 
-    toast.innerHTML = `
+function getStatusClass(status) {
 
-        <span class="toast-check">
-            ✓
-        </span>
+    if (status === "SOLD") {
+        return "sold";
+    }
 
-        <span>
-            ${message}
-        </span>
+    if (status === "SUSPENDED") {
+        return "suspended";
+    }
 
-    `;
-
-
-    document.body.appendChild(toast);
+    return "available";
+}
 
 
-    setTimeout(() => {
+// ==========================================
+// 12. HTML SAFETY
+// ==========================================
 
-        toast.classList.add(
-            "hide"
-        );
+function escapeHTML(value) {
 
-        setTimeout(() => {
+    if (value === null || value === undefined) {
+        return "";
+    }
 
-            toast.remove();
-
-        }, 300);
-
-    }, 2200);
-
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }

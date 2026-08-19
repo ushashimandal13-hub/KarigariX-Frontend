@@ -1534,3 +1534,693 @@ td small {
     }
 
 }
+/* =========================================================
+   REGISTER PRODUCT PAGE
+   ========================================================= */
+
+.register-page {
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 50px 25px 80px;
+
+    background: #f8f4ee;
+}
+
+
+.register-card {
+    width: 100%;
+    max-width: 720px;
+    box-sizing: border-box;
+}
+
+
+/* Back button */
+
+.back-button {
+    border: none;
+    background: transparent;
+
+    padding: 0;
+    margin-bottom: 45px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    color: #4f4841;
+
+    cursor: pointer;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* Small portal heading */
+
+.register-card .portal-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 600;
+
+    color: #766b61;
+}
+
+
+.register-card .label-line {
+    width: 35px;
+    height: 1px;
+
+    background: #766b61;
+}
+
+
+/* Main heading */
+
+.register-card h1 {
+    margin: 22px 0 12px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(42px, 6vw, 64px);
+    line-height: 1.05;
+
+    font-weight: 500;
+
+    color: #29231f;
+}
+
+
+.register-card > p {
+    margin: 0 0 40px;
+
+    max-width: 600px;
+
+    font-size: 17px;
+    line-height: 1.7;
+
+    color: #756c64;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+#registerForm {
+    display: flex;
+    flex-direction: column;
+}
+
+
+#registerForm label {
+    margin: 22px 0 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #403932;
+}
+
+
+#registerForm input,
+#registerForm textarea {
+
+    width: 100%;
+    box-sizing: border-box;
+
+    border: 1px solid #d6cec4;
+
+    border-radius: 2px;
+
+    background: #fffdf9;
+
+    padding: 15px 16px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    color: #302a25;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+#registerForm input {
+    height: 52px;
+}
+
+
+#registerForm textarea {
+    min-height: 120px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+#registerForm input::placeholder,
+#registerForm textarea::placeholder {
+    color: #aaa19a;
+}
+
+
+#registerForm input:focus,
+#registerForm textarea:focus {
+
+    border-color: #7b6a5d;
+
+    box-shadow: 0 0 0 3px rgba(123, 106, 93, 0.08);
+}
+
+
+/* Register button */
+
+#registerForm .primary-button {
+
+    width: fit-content;
+
+    margin-top: 35px;
+
+    padding: 15px 28px;
+
+    border: none;
+    border-radius: 2px;
+
+    background: #29231f;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+#registerForm .primary-button:hover {
+
+    background: #403831;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   QR CODE MODAL
+   ========================================================= */
+
+.qr-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(36, 30, 25, 0.60);
+
+    backdrop-filter: blur(4px);
+}
+
+
+.qr-modal.show {
+    display: flex;
+}
+
+
+.qr-card {
+
+    position: relative;
+
+    width: 100%;
+    max-width: 460px;
+
+    box-sizing: border-box;
+
+    padding: 45px 40px;
+
+    background: #fffdf9;
+
+    text-align: center;
+
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Close */
+
+.close-button {
+
+    position: absolute;
+
+    top: 12px;
+    right: 16px;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 28px;
+
+    color: #5e554e;
+
+    cursor: pointer;
+}
+
+
+.close-button:hover {
+    color: #29231f;
+}
+
+
+/* QR heading */
+
+.qr-label {
+
+    margin: 0 0 12px !important;
+
+    font-size: 11px !important;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+    color: #81766d !important;
+}
+
+
+.qr-card h2 {
+
+    margin: 0 0 25px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 30px;
+
+    font-weight: 500;
+
+    color: #29231f;
+}
+
+
+/* QR + traditional decoration */
+
+.qr-decoration {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin: 10px 0 25px;
+}
+
+
+.qr-decoration span {
+
+    font-family: Georgia, serif;
+
+    font-size: 24px;
+
+    color: #8b7561;
+}
+
+
+.qr-img {
+
+    display: block;
+
+    width: 250px;
+    height: 250px;
+
+    object-fit: contain;
+
+    background: white;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ded5ca;
+}
+
+
+.qr-card > p:not(.qr-label) {
+
+    margin: 0 auto 25px;
+
+    max-width: 330px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color: #756c64;
+}
+
+
+/* Print button */
+
+.qr-card .primary-button {
+
+    border: none;
+
+    padding: 14px 28px;
+
+    background: #29231f;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+
+.qr-card .primary-button:hover {
+    background: #403831;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .register-page {
+        padding: 35px 20px 60px;
+    }
+
+    .register-card h1 {
+        font-size: 42px;
+    }
+
+    .qr-card {
+        padding: 40px 22px 30px;
+    }
+
+    .qr-img {
+        width: 210px;
+        height: 210px;
+    }
+
+    .qr-decoration {
+        gap: 8px;
+    }
+
+}
+/* ============================================================
+   DASHBOARD HTML CLASS FIX
+   ============================================================ */
+
+.dashboard-page {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 60px;
+}
+
+
+/* Register button in your current HTML */
+
+.dashboard-header > button {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 5px;
+    background: #a84f35;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dashboard-header > button:hover {
+    background: #8e3e2b;
+    transform: translateY(-1px);
+}
+
+
+/* Search box */
+
+.search-box {
+    display: flex;
+    gap: 8px;
+}
+
+.search-box input {
+    width: 270px;
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid #d9d0c6;
+    outline: none;
+
+    background: #fffdf9;
+    font-size: 12px;
+}
+
+.search-box input:focus {
+    border-color: #a84f35;
+}
+
+.search-box button {
+    height: 44px;
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 4px;
+
+    background: #29231f;
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* Table container */
+
+.table-container {
+    overflow-x: auto;
+
+    border: 1px solid #e5ddd3;
+
+    background: #fffdf9;
+}
+
+
+/* Clickable product rows */
+
+.table-container tr {
+    transition: 0.2s;
+}
+
+.table-container tbody tr:hover {
+    background: #f8f1e9;
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   YOUR MODAL CLASS NAMES
+   ============================================================ */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(38, 29, 24, 0.5);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+
+.modal-card {
+    position: relative;
+
+    width: min(530px, 100%);
+
+    padding: 40px;
+
+    background: #fffdf9;
+
+    box-shadow:
+        0 30px 80px
+        rgba(40, 30, 20, 0.25);
+}
+
+
+.close-btn {
+    position: absolute;
+
+    top: 14px;
+    right: 18px;
+
+    border: none;
+    background: none;
+
+    color: #756b63;
+
+    font-size: 29px;
+
+    cursor: pointer;
+}
+
+
+.modal-card h2 {
+    margin: 10px 0 25px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 34px;
+
+    font-weight: 500;
+}
+
+
+.product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.product-details p {
+    color: #81776e;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.product-details strong {
+    color: #403a35;
+}
+
+
+.modal-actions {
+    margin-top: 25px;
+
+    display: flex;
+    gap: 10px;
+}
+
+
+.modal-actions button {
+    flex: 1;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 4px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.danger-btn {
+    background: #a84f35;
+    color: white;
+}
+
+
+.secondary-btn {
+    background: #4c7653;
+    color: white;
+}
+
+
+/* ============================================================
+   RESPONSIVE DASHBOARD
+   ============================================================ */
+
+@media (max-width: 780px) {
+
+    .dashboard-page {
+        padding: 40px 25px;
+    }
+
+    .dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .dashboard-page {
+        padding: 30px 18px;
+    }
+
+    .search-box {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+
+    .modal-card {
+        padding: 30px 22px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+}

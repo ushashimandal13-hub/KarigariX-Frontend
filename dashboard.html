@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Artist Dashboard | KarigariX</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="dashboard-page">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+
+            <div>
+                <span class="portal-label">ARTIST PORTAL</span>
+
+                <h1>
+                    Welcome, <span id="artistEmail">Artist</span>
+                </h1>
+
+                <p>
+                    Manage your crafts and digital product passports.
+                </p>
+            </div>
+
+            <button onclick="window.location.href='register.html'">
+    + Register Product
+</button>
+
+        </header>
+
+
+        <!-- AVAILABLE / SOLD PRODUCTS -->
+        <section class="product-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>My Products</h2>
+
+                    <p>
+                        Available and sold products
+                    </p>
+                </div>
+
+                <div class="search-box">
+
+                    <input
+                        type="email"
+                        id="productSearch"
+                        placeholder="Enter artist email"
+                    >
+
+                    <button id="searchProductsBtn">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Artist</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productsTableBody">
+
+                        <tr>
+                            <td colspan="4">
+                                Loading products...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUSPENDED PRODUCTS -->
+        <section class="product-section suspended-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Suspended Products</h2>
+
+                    <p>
+                        Products temporarily suspended by the system.
+                    </p>
+                </div>
+
+                <div class="search-box">
+
+                    <input
+                        type="email"
+                        id="suspendedSearch"
+                        placeholder="Enter artist email"
+                    >
+
+                    <button id="searchSuspendedBtn">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Artist</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="suspendedTableBody">
+
+                        <tr>
+                            <td colspan="4">
+                                Loading suspended products...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- PRODUCT DETAILS MODAL -->
+
+    <div id="productModal" class="modal hidden">
+
+        <div class="modal-card">
+
+            <button
+                id="closeProductModal"
+                class="close-btn"
+            >
+                ×
+            </button>
+
+            <h2 id="modalProductName">
+                Product
+            </h2>
+
+            <div class="product-details">
+
+                <p>
+                    <strong>Artist:</strong>
+                    <span id="modalArtistName"></span>
+                </p>
+
+                <p>
+                    <strong>Material:</strong>
+                    <span id="modalMaterial"></span>
+                </p>
+
+                <p>
+                    <strong>History:</strong>
+                    <span id="modalHistory"></span>
+                </p>
+
+                <p>
+                    <strong>Cost:</strong>
+                    ₹<span id="modalCost"></span>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span id="modalStatus"></span>
+                </p>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <!-- Only available products will use this -->
+                <button
+                    id="soldOutBtn"
+                    class="danger-btn"
+                >
+                    Mark as Sold Out
+                </button>
+
+                <!-- Only suspended products will use this -->
+                <button
+                    id="unsuspendBtn"
+                    class="secondary-btn"
+                >
+                    Unsuspend Product
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
+

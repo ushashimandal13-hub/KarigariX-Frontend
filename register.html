@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register Product | KarigariX</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="register-page">
+
+        <div class="register-card">
+
+            <button class="back-button"
+                onclick="window.location.href='dashboard.html'">
+                ← Back to Dashboard
+            </button>
+
+            <div class="portal-label">
+                <span class="label-line"></span>
+                ARTIST PORTAL
+            </div>
+
+            <h1>Register your craft.</h1>
+
+            <p>
+                Create a digital product passport for your handmade product.
+            </p>
+
+
+            <form id="registerForm">
+
+                <label for="artistName">Artist Name</label>
+
+                <input
+                    type="text"
+                    id="artistName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+
+                <label for="artistEmail">Artist Email</label>
+
+                <input
+                    type="email"
+                    id="artistEmail"
+                    placeholder="artist@example.com"
+                    required
+                >
+
+
+                <label for="productName">Product Name</label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="e.g. Bandhani Tie-Dye"
+                    required
+                >
+
+
+                <label for="materialDetails">
+                    Material Details
+                </label>
+
+                <textarea
+                    id="materialDetails"
+                    placeholder="Describe the materials used..."
+                    required
+                ></textarea>
+
+
+                <label for="history">
+                    Product History
+                </label>
+
+                <textarea
+                    id="history"
+                    placeholder="Tell the story behind this craft..."
+                    required
+                ></textarea>
+
+
+                <label for="fixedCost">
+                    Fixed Cost
+                </label>
+
+                <input
+                    type="number"
+                    id="fixedCost"
+                    placeholder="₹"
+                    min="0"
+                    required
+                >
+
+
+                <label for="payout">
+                    Payout
+                </label>
+
+                <input
+                    type="number"
+                    id="payout"
+                    placeholder="₹"
+                    min="0"
+                >
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Register Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- QR CODE POPUP -->
+
+    <div id="qrModal" class="qr-modal">
+
+        <div class="qr-card">
+
+            <button
+                class="close-button"
+                onclick="closeQRModal()"
+            >
+                ×
+            </button>
+
+            <p class="qr-label">
+                DIGITAL PRODUCT PASSPORT
+            </p>
+
+            <h2 id="qrProductName">
+                Product Name
+            </h2>
+
+            <div class="qr-decoration">
+
+                <span>✦</span>
+
+                <img
+                    id="qrImage"
+                    class="qr-img"
+                    alt="Product QR Code"
+                >
+
+                <span>✦</span>
+
+            </div>
+
+            <p>
+                Print this QR code and attach it to your craft.
+            </p>
+
+            <button
+                class="primary-button"
+                onclick="printQR()"
+            >
+                Print QR Code
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

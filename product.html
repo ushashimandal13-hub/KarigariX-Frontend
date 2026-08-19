@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Product Passport | KarigariX</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="product-page">
+
+        <!-- HEADER -->
+
+        <section class="product-hero">
+
+            <div class="passport-label">
+                DIGITAL PRODUCT PASSPORT
+            </div>
+
+            <h1 id="productName">
+                Loading product...
+            </h1>
+
+            <p id="artistName">
+                Please wait while we verify this product.
+            </p>
+
+        </section>
+
+
+        <!-- LOADING -->
+
+        <section id="loadingState" class="product-card">
+
+            <div class="loader"></div>
+
+            <p>
+                Verifying product passport...
+            </p>
+
+        </section>
+
+
+        <!-- PRODUCT DETAILS -->
+
+        <section
+            id="productDetails"
+            class="product-card hidden"
+        >
+
+            <div class="verified-badge">
+                ✓ AUTHENTICATED PRODUCT
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>Product</span>
+
+                <strong id="detailProductName">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>Artist</span>
+
+                <strong id="detailArtistName">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>Price</span>
+
+                <strong>
+                    ₹<span id="detailPrice">-</span>
+                </strong>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>
+                    Material Details
+                </h3>
+
+                <p id="materialDetails">
+                    -
+                </p>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>
+                    Craft History
+                </h3>
+
+                <p id="craftHistory">
+                    -
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ERROR / SUSPENDED / SOLD -->
+
+        <section
+            id="statusMessage"
+            class="product-card hidden"
+        >
+
+            <div class="status-icon">
+                !
+            </div>
+
+            <h2 id="statusTitle">
+                Product unavailable
+            </h2>
+
+            <p id="statusDescription">
+                This product is currently unavailable.
+            </p>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="product-footer">
+
+            <span>KarigariX</span>
+
+            <span>
+                Digital Product Passport
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="product.js"></script>
+
+</body>
+
+</html>
