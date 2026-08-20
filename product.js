@@ -1,18 +1,12 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://adventurous-joy-production-a1d8.up.railway.app";
 
-
-// ==========================================
 // GET CRAFT ID FROM URL
-// ==========================================
 
 const pathParts = window.location.pathname.split("/");
 
 const craftId = pathParts[pathParts.length - 1];
 
-
-// ==========================================
 // ELEMENTS
-// ==========================================
 
 const loadingState =
     document.getElementById("loadingState");
@@ -23,10 +17,7 @@ const productDetails =
 const statusMessage =
     document.getElementById("statusMessage");
 
-
-// ==========================================
 // LOAD PRODUCT
-// ==========================================
 
 async function loadProduct() {
 
