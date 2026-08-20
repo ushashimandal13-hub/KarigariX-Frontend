@@ -504,16 +504,3 @@ function escapeHTML(value) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-const loginForm = document.getElementById("loginForm");
-
-if (loginForm) {
-    loginForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const email = document.getElementById("email").value;
-
-        localStorage.setItem("artistEmail", email);
-
-        window.location.href = "dashboard.html";
-    });
-}
