@@ -1,5 +1,5 @@
 // KARIGARIX - FRONTEND
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://adventurous-joy-production-a1d8.up.railway.app";
 
 // 1. LANDING PAGE → DASHBOARD
 
@@ -504,12 +504,16 @@ function escapeHTML(value) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+const loginForm = document.getElementById("loginForm");
 
-    const email = document.getElementById("email").value;
+if (loginForm) {
+    loginForm.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-    localStorage.setItem("artistEmail", email);
+        const email = document.getElementById("email").value;
 
-    window.location.href = "dashboard.html";
-});
+        localStorage.setItem("artistEmail", email);
+
+        window.location.href = "dashboard.html";
+    });
+}
