@@ -2,7 +2,6 @@
 const API_BASE_URL = "https://adventurous-joy-production-a1d8.up.railway.app";
 
 // 1. LANDING PAGE → DASHBOARD
-
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
@@ -58,7 +57,6 @@ if (productsTableBody && suspendedTableBody) {
         loadSuspendedProducts(artistEmail);
     }
 
-
     // Normal product search
     const searchProductsBtn =
         document.getElementById("searchProductsBtn");
@@ -73,7 +71,6 @@ if (productsTableBody && suspendedTableBody) {
             }
         });
     }
-
 
     // Suspended product search
     const searchSuspendedBtn =
@@ -91,10 +88,7 @@ if (productsTableBody && suspendedTableBody) {
     }
 }
 
-
-// ==========================================
 // 3. GET NORMAL PRODUCTS
-// ==========================================
 
 async function loadProducts(email) {
 
@@ -109,6 +103,8 @@ async function loadProducts(email) {
         }
 
         const products = await response.json();
+
+        console.log("Products received from backend:", products);
 
         renderProducts(products);
 
@@ -127,7 +123,6 @@ async function loadProducts(email) {
         }
     }
 }
-
 
 // ==========================================
 // 4. GET SUSPENDED PRODUCTS
@@ -486,10 +481,7 @@ function getStatusClass(status) {
     return "available";
 }
 
-
-// ==========================================
 // 12. HTML SAFETY
-// ==========================================
 
 function escapeHTML(value) {
 
@@ -503,4 +495,145 @@ function escapeHTML(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+// 13. REGISTER PRODUCT
+
+const registerForm = document.getElementById("registerForm");
+
+if (registerForm) {
+
+    registerForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const product = {
+            artistName: document.getElementById("artistName").value.trim(),
+            artistEmail: document.getElementById("artistEmail").value.trim(),
+            productName: document.getElementById("productName").value.trim(),
+            materialDetails: document.getElementById("materialDetails").value.trim(),
+            history: document.getElementById("history").value.trim(),
+            fixedCost: Number(document.getElementById("fixedCost").value),
+            payout: Number(document.getElementById("payout").value)
+        };
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/artist/register`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(product)
+                }
+            );
+
+            if (!response.ok) {
+                const errorText = await response.text();
+
+                throw new Error(
+                    `Registration failed (${response.status}): ${errorText}`
+                );
+            }
+
+            const qrData = await response.json();
+
+            console.log(
+                "Product registered successfully:",
+                qrData
+            );
+
+            const qrModal =
+                document.getElementById("qrModal");
+
+            const qrProductName =
+                document.getElementById("qrProductName");
+
+            const qrImage =
+                document.getElementById("qrImage");
+
+            // Show product name
+            if (qrProductName) {
+                qrProductName.textContent =
+                    qrData.productName;
+            }
+
+            // Show QR code
+            if (qrImage && qrData.qrCodeString) {
+                qrImage.src =
+                    "data:image/png;base64," +
+                    qrData.qrCodeString;
+            }
+
+            // Open QR popup
+            if (qrModal) {
+                qrModal.classList.add("show");
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+            alert(
+                "Unable to register product.\n\n" +
+                error.message
+            );
+        }
+
+    });
+}
+function printQR() {
+    const productName =
+        document.getElementById("qrProductName").textContent;
+
+    const qrImage =
+        document.getElementById("qrImage").src;
+
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Digital Product Passport</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    padding: 40px;
+                }
+
+                h1 {
+                    margin-bottom: 25px;
+                }
+
+                img {
+                    width: 300px;
+                    height: 300px;
+                }
+
+                p {
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+
+        <body>
+            <h1>${escapeHTML(productName)}</h1>
+            <img src="${qrImage}" alt="Product QR Code">
+            <p>Digital Product Passport — KarigariX</p>
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+
+    printWindow.onload = function () {
+        printWindow.print();
+    };
 }
