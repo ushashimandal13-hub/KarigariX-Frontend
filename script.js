@@ -1,13 +1,7 @@
-// ==========================================
 // KARIGARIX - FRONTEND
-// ==========================================
-
 const API_BASE_URL = "http://localhost:8080";
 
-
-// ==========================================
 // 1. LANDING PAGE → DASHBOARD
-// ==========================================
 
 const loginForm = document.getElementById("loginForm");
 
@@ -26,10 +20,7 @@ if (loginForm) {
     });
 }
 
-
-// ==========================================
 // 2. DASHBOARD
-// ==========================================
 
 const productsTableBody =
     document.getElementById("productsTableBody");
@@ -331,7 +322,7 @@ function openProductModal(product, isSuspended) {
 
         unsuspendBtn.style.display = "none";
 
-        if (product.status === "SOLD") {
+        if (product.status === "SOLD_OUT") {
             soldOutBtn.style.display = "none";
         } else {
             soldOutBtn.style.display = "block";
@@ -343,10 +334,7 @@ function openProductModal(product, isSuspended) {
         .classList.remove("hidden");
 }
 
-
-// ==========================================
 // 8. CLOSE MODAL
-// ==========================================
 
 const closeProductModal =
     document.getElementById("closeProductModal");
@@ -362,7 +350,6 @@ if (closeProductModal) {
     });
 }
 
-
 const productModal =
     document.getElementById("productModal");
 
@@ -377,11 +364,7 @@ if (productModal) {
     });
 }
 
-
-// ==========================================
 // 9. SOLD OUT
-// ==========================================
-
 const soldOutBtn =
     document.getElementById("soldOutBtn");
 
@@ -427,11 +410,7 @@ if (soldOutBtn) {
     });
 }
 
-
-// ==========================================
 // 10. UNSUSPEND
-// ==========================================
-
 const unsuspendBtn =
     document.getElementById("unsuspendBtn");
 
@@ -478,10 +457,7 @@ if (unsuspendBtn) {
     });
 }
 
-
-// ==========================================
 // 11. STATUS FORMATTING
-// ==========================================
 
 function formatStatus(status) {
 
@@ -528,3 +504,12 @@ function escapeHTML(value) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+
+    localStorage.setItem("artistEmail", email);
+
+    window.location.href = "dashboard.html";
+});
