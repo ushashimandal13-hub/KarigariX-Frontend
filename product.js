@@ -80,12 +80,8 @@ function handleResponse(data) {
 
     const status = data.status;
 
-
-    // --------------------------------------
     // AVAILABLE
-    // --------------------------------------
-
-    if (status === "AVAILABLE") {
+     if (status === "SECURE" || status === "AVAILABLE") {
 
         showProduct(data);
 
@@ -219,5 +215,3 @@ function showStatus(title, description) {
 // ==========================================
 
 loadProduct();
-const pathParts = window.location.pathname.split("/");
-const craftId = pathParts[pathParts.length - 1];
