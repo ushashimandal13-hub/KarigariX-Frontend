@@ -2227,3 +2227,27 @@ td small {
 .hidden {
     display: none !important;
 }
+/* CO-OP ADMIN TOGGLE */
+
+.coop-section {
+    margin: 20px 0 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.checkbox-label input {
+    width: auto;
+    cursor: pointer;
+}
+
+.coop-hint {
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0.7;
+}

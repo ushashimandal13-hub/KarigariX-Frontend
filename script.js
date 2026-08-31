@@ -496,6 +496,34 @@ function escapeHTML(value) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+// ==========================================
+// CO-OP ADMIN TOGGLE
+// ==========================================
+
+const isCoopAdmin = document.getElementById("isCoopAdmin");
+const payoutSection = document.getElementById("payoutSection");
+const payoutInput = document.getElementById("payout");
+
+if (isCoopAdmin && payoutSection && payoutInput) {
+
+    isCoopAdmin.addEventListener("change", function () {
+
+        if (this.checked) {
+
+            payoutSection.classList.remove("hidden");
+            payoutInput.required = true;
+
+        } else {
+
+            payoutSection.classList.add("hidden");
+            payoutInput.required = false;
+            payoutInput.value = "";
+
+        }
+
+    });
+
+}
 
 // 13. REGISTER PRODUCT
 
@@ -508,15 +536,17 @@ if (registerForm) {
         event.preventDefault();
 
         const product = {
-            artistName: document.getElementById("artistName").value.trim(),
-            artistEmail: document.getElementById("artistEmail").value.trim(),
-            productName: document.getElementById("productName").value.trim(),
-            materialDetails: document.getElementById("materialDetails").value.trim(),
-            history: document.getElementById("history").value.trim(),
-            fixedCost: Number(document.getElementById("fixedCost").value),
-            payout: Number(document.getElementById("payout").value)
-        };
+    artistName: document.getElementById("artistName").value.trim(),
+    artistEmail: document.getElementById("artistEmail").value.trim(),
+    productName: document.getElementById("productName").value.trim(),
+    materialDetails: document.getElementById("materialDetails").value.trim(),
+    history: document.getElementById("history").value.trim(),
+    fixedCost: Number(document.getElementById("fixedCost").value),
 
+    payout: isCoopAdmin && isCoopAdmin.checked
+        ? Number(payoutInput.value)
+        : null
+};
         try {
 
             const response = await fetch(

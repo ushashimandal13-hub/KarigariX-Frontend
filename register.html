@@ -98,18 +98,36 @@
                     min="0"
                     required
                 >
+<div class="coop-section">
+
+    <label class="checkbox-label">
+        <input type="checkbox" id="isCoopAdmin">
+        Are you a Co-Op Admin?
+    </label>
+
+    <p class="coop-hint">
+        Enable this if you are registering products on behalf of a cooperative or group.
+    </p>
+
+</div>
 
 
-                <label for="payout">
-                    Payout
-                </label>
+<div id="payoutSection" class="hidden">
 
-                <input
-                    type="number"
-                    id="payout"
-                    placeholder="₹"
-                    min="0"
-                >
+    <label for="payout">
+        Payout
+    </label>
+
+    <input
+        type="number"
+        id="payout"
+        placeholder="₹"
+        min="0"
+    >
+
+</div>
+
+                
 
 
                 <button

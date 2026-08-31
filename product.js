@@ -71,10 +71,7 @@ async function loadProduct() {
     }
 }
 
-
-// ==========================================
 // HANDLE BACKEND RESPONSE
-// ==========================================
 
 function handleResponse(data) {
 
@@ -88,10 +85,7 @@ function handleResponse(data) {
         return;
     }
 
-
-    // --------------------------------------
     // SUSPENDED
-    // --------------------------------------
 
     if (status === "SUSPENDED") {
 
@@ -103,10 +97,7 @@ function handleResponse(data) {
         return;
     }
 
-
-    // --------------------------------------
     // SOLD OUT
-    // --------------------------------------
 
     if (status === "SOLD_OUT" || status === "SOLD") {
 
@@ -118,10 +109,7 @@ function handleResponse(data) {
         return;
     }
 
-
-    // --------------------------------------
     // UNKNOWN STATUS
-    // --------------------------------------
 
     showStatus(
         "Product Unavailable",
@@ -129,10 +117,7 @@ function handleResponse(data) {
     );
 }
 
-
-// ==========================================
 // SHOW PRODUCT
-// ==========================================
 
 function showProduct(data) {
 
@@ -185,10 +170,7 @@ function showProduct(data) {
         data.history || "-";
 }
 
-
-// ==========================================
 // SHOW STATUS MESSAGE
-// ==========================================
 
 function showStatus(title, description) {
 
@@ -209,9 +191,5 @@ function showStatus(title, description) {
     ).textContent = description;
 }
 
-
-// ==========================================
 // START
-// ==========================================
-
 loadProduct();
