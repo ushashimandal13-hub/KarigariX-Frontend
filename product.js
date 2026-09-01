@@ -16,7 +16,13 @@ const productDetails =
 
 const statusMessage =
     document.getElementById("statusMessage");
+const tipSection =
+    document.getElementById("tipSection");
 
+const tipMessage =
+    document.getElementById("tipMessage");
+
+let currentProduct = null;
 // LOAD PRODUCT
 
 async function loadProduct() {
@@ -120,13 +126,16 @@ function handleResponse(data) {
 // SHOW PRODUCT
 
 function showProduct(data) {
-
+    currentProduct = data;
     loadingState.classList.add("hidden");
 
     statusMessage.classList.add("hidden");
 
     productDetails.classList.remove("hidden");
 
+ if (tipSection) {
+        tipSection.classList.remove("hidden");
+    }
 
     document.getElementById(
         "productName"
@@ -190,6 +199,64 @@ function showStatus(title, description) {
         "statusDescription"
     ).textContent = description;
 }
+// ADD TIP
 
+async function addTip(tier) {
+
+    if (!currentProduct) {
+        console.error("Product data is not available.");
+        return;
+    }
+
+    const tipData = {
+        craftId: String(currentProduct.craftId),
+        artistEmail: currentProduct.artistEmail,
+        tier: tier
+    };
+
+    console.log("Sending tip:", tipData);
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/tips/add`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(tipData)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Could not process tip.");
+        }
+
+        const result = await response.json();
+
+        console.log("Tip response:", result);
+
+        if (tipMessage) {
+
+            if (tier === 0) {
+                tipMessage.textContent =
+                    "Thank you for exploring this artisan's work!";
+            } else {
+                tipMessage.textContent =
+                    `Thank you! Your ${tier}% tip has been added.`;
+            }
+        }
+
+    } catch (error) {
+
+        console.error("Tip error:", error);
+
+        if (tipMessage) {
+            tipMessage.textContent =
+                "Unable to process your tip. Please try again.";
+        }
+    }
+}
 // START
 loadProduct();

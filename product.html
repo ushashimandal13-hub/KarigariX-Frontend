@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -13,9 +14,11 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 
+
 <body>
 
     <main class="product-page">
+
 
         <!-- HEADER -->
 
@@ -38,7 +41,10 @@
 
         <!-- LOADING -->
 
-        <section id="loadingState" class="product-card">
+        <section
+            id="loadingState"
+            class="product-card"
+        >
 
             <div class="loader"></div>
 
@@ -122,6 +128,58 @@
         </section>
 
 
+        <!-- TIP SECTION -->
+
+        <section
+            id="tipSection"
+            class="tip-section hidden"
+        >
+
+            <h3>
+                Want to give a tip to the artist? ❤️
+            </h3>
+
+            <p>
+                Support the artisan and their craftsmanship.
+            </p>
+
+
+            <div class="tip-buttons">
+
+                <button
+                    type="button"
+                    onclick="addTip(0)"
+                >
+                    No Tip
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="addTip(5)"
+                >
+                    5% Tip
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="addTip(10)"
+                >
+                    10% Tip
+                </button>
+
+            </div>
+
+
+            <p
+                id="tipMessage"
+                class="tip-message"
+            ></p>
+
+        </section>
+
+
         <!-- ERROR / SUSPENDED / SOLD -->
 
         <section
@@ -148,13 +206,16 @@
 
         <footer class="product-footer">
 
-            <span>KarigariX</span>
+            <span>
+                KarigariX
+            </span>
 
             <span>
                 Digital Product Passport
             </span>
 
         </footer>
+
 
     </main>
 
