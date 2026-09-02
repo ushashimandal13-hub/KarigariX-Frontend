@@ -129,56 +129,56 @@
 
 
         <!-- TIP SECTION -->
+<!-- TIP SECTION -->
 
-        <section
-            id="tipSection"
-            class="tip-section hidden"
+<section
+    id="tipSection"
+    class="tip-section hidden"
+>
+
+    <h3>
+        Want to give a tip to the artist? ❤️
+    </h3>
+
+    <p>
+        Support the artisan and their craftsmanship.
+    </p>
+
+    <div class="tip-buttons">
+
+        <button
+            type="button"
+            class="tip-btn"
+            onclick="submitTip(0)"
         >
+            No Tip
+        </button>
 
-            <h3>
-                Want to give a tip to the artist? ❤️
-            </h3>
+        <button
+            type="button"
+            class="tip-btn"
+            onclick="submitTip(5)"
+        >
+            5% Tip
+        </button>
 
-            <p>
-                Support the artisan and their craftsmanship.
-            </p>
+        <button
+            type="button"
+            class="tip-btn"
+            onclick="submitTip(10)"
+        >
+            10% Tip
+        </button>
 
+    </div>
 
-            <div class="tip-buttons">
+    <p
+        id="tipStatus"
+        class="tip-message hidden"
+    ></p>
 
-                <button
-                    type="button"
-                    onclick="addTip(0)"
-                >
-                    No Tip
-                </button>
-
-
-                <button
-                    type="button"
-                    onclick="addTip(5)"
-                >
-                    5% Tip
-                </button>
-
-
-                <button
-                    type="button"
-                    onclick="addTip(10)"
-                >
-                    10% Tip
-                </button>
-
-            </div>
-
-
-            <p
-                id="tipMessage"
-                class="tip-message"
-            ></p>
-
-        </section>
-
+</section>
+        
 
         <!-- ERROR / SUSPENDED / SOLD -->
 
