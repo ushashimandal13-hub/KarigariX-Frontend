@@ -16,7 +16,8 @@ const productDetails =
 
 const statusMessage =
     document.getElementById("statusMessage");
-
+const tipSection =
+    document.getElementById("tipSection");
 // LOAD PRODUCT
 
 async function loadProduct() {
@@ -126,7 +127,7 @@ function showProduct(data) {
     statusMessage.classList.add("hidden");
 
     productDetails.classList.remove("hidden");
-
+tipSection.classList.remove("hidden");
 
     document.getElementById(
         "productName"
@@ -240,7 +241,7 @@ function showStatus(title, description) {
     productDetails.classList.add("hidden");
 
     statusMessage.classList.remove("hidden");
-
+    statusMessage.classList.remove("hidden");
 
     document.getElementById(
         "statusTitle"
